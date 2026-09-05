@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block titulo %}Colaboradores{% endblock %}
+
+{% block contenido %}
+<div class="bg-white border rounded p-4">
+
+    <h1 class="text-success mb-4">Colaboradores registrados</h1>
+
+    <a href="/registro" class="btn btn-success mb-3">
+        Registrar colaborador
+    </a>
+
+    {% if colaboradores %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Día de turno</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for colaborador in colaboradores %}
+                <tr>
+                    <td>{{ colaborador.nombre }}</td>
+                    <td>{{ colaborador.apellido }}</td>
+                    <td>{{ colaborador.edad }} años</td>
+                    <td>{{ colaborador.dia_semana }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <p class="text-muted">
+        Todavía no hay colaboradores registrados.
+    </p>
+
+    {% endif %}
+
+    <a href="/resumen" class="btn btn-outline-success">
+        Ver resumen por día
+    </a>
+
+</div>
+{% endblock %}

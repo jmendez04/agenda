@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}Resumen por día{% endblock %}
+
+{% block contenido %}
+<div class="bg-white border rounded p-4">
+
+    <h1 class="text-success mb-4">Resumen por día</h1>
+
+    <p>Cantidad de colaboradores que trabajan cada día de la semana.</p>
+
+    <!-- Tabla de resumen -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th scope="col">Día de la semana</th>
+                    <th scope="col">Cantidad de colaboradores</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for dia, cantidad in resumen.items() %}
+                <tr>
+                    <th scope="row">{{ dia }}</th>
+                    <td>{{ cantidad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/colaboradores" class="btn btn-success">
+        Ver colaboradores
+    </a>
+
+    <a href="/registro" class="btn btn-outline-success">
+        Registrar colaborador
+    </a>
+
+</div>
+{% endblock %}

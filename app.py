@@ -22,6 +22,7 @@ def cargar_colaboradores():
 
     if os.path.exists("colaboradores.txt"):
         with open("colaboradores.txt", "r", encoding="utf-8") as archivo:
+
             for linea in archivo:
                 datos = linea.strip().split("|")
 
@@ -30,10 +31,12 @@ def cargar_colaboradores():
                         "nombre": datos[0],
                         "apellido": datos[1],
                         "fecha_nacimiento": datos[2],
-                        "dia_turno": datos[3]
+                        "dia_semana": datos[3]
                     }
 
-                    colaborador["edad"] = calcular_edad(datos[2])
+                    colaborador["edad"] = calcular_edad(
+                        colaborador["fecha_nacimiento"]
+                    )
 
                     colaboradores.append(colaborador)
 
@@ -52,16 +55,23 @@ def inicio():
 def registro():
 
     if request.method == "POST":
-        nombre = request.form["nombre"]
-        apellido = request.form["apellido"]
-        fecha_nacimiento = request.form["fecha_nacimiento"]
-        dia_turno = request.form["dia_turno"]
+
+        nombre = request.form.get("nombre", "").strip()
+        apellido = request.form.get("apellido", "").strip()
+        fecha_nacimiento = request.form.get("fecha_nacimiento", "")
+        dia_semana = request.form.get("dia_semana", "")
+
+        if nombre == "" or apellido == "" or fecha_nacimiento == "" or dia_semana == "":
+            return render_template(
+                "registro.html",
+                error="Todos los campos son obligatorios."
+            )
 
         colaborador = {
             "nombre": nombre,
             "apellido": apellido,
             "fecha_nacimiento": fecha_nacimiento,
-            "dia_turno": dia_turno
+            "dia_semana": dia_semana
         }
 
         with open("colaboradores.txt", "a", encoding="utf-8") as archivo:
@@ -69,7 +79,7 @@ def registro():
                 f"{colaborador['nombre']}|"
                 f"{colaborador['apellido']}|"
                 f"{colaborador['fecha_nacimiento']}|"
-                f"{colaborador['dia_turno']}\n"
+                f"{colaborador['dia_semana']}\n"
             )
 
         return redirect(url_for("colaboradores"))
@@ -80,6 +90,7 @@ def registro():
 # Pagina de colaboradores
 @app.route("/colaboradores")
 def colaboradores():
+
     lista = cargar_colaboradores()
 
     return render_template(

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 import os
 
@@ -13,7 +13,7 @@ def calcular_edad(fecha_nacimiento):
 
     if (hoy.month, hoy.day) < (fecha.month, fecha.day):
         edad -= 1
- 
+
     return edad
 
 
@@ -34,6 +34,7 @@ def cargar_colaboradores():
                     }
 
                     colaborador["edad"] = calcular_edad(datos[2])
+
                     colaboradores.append(colaborador)
 
     return colaboradores
@@ -44,6 +45,36 @@ def cargar_colaboradores():
 @app.route("/base")
 def inicio():
     return render_template("base.html")
+
+
+# Pagina de registro
+@app.route("/registro", methods=["GET", "POST"])
+def registro():
+
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        apellido = request.form["apellido"]
+        fecha_nacimiento = request.form["fecha_nacimiento"]
+        dia_turno = request.form["dia_turno"]
+
+        colaborador = {
+            "nombre": nombre,
+            "apellido": apellido,
+            "fecha_nacimiento": fecha_nacimiento,
+            "dia_turno": dia_turno
+        }
+
+        with open("colaboradores.txt", "a", encoding="utf-8") as archivo:
+            archivo.write(
+                f"{colaborador['nombre']}|"
+                f"{colaborador['apellido']}|"
+                f"{colaborador['fecha_nacimiento']}|"
+                f"{colaborador['dia_turno']}\n"
+            )
+
+        return redirect(url_for("colaboradores"))
+
+    return render_template("registro.html")
 
 
 # Pagina de colaboradores

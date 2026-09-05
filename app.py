@@ -1,26 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
+# Pagina de bienvenida
 @app.route("/")
+@app.route("/base")
 def inicio():
-    return redirect(url_for("registro"))
-
-
-@app.route("/registro", methods=["GET", "POST"])
-def registro():
-    return render_template("registro.html")
-
-
-@app.route("/colaboradores")
-def colaboradores():
-    return render_template("colaboradores.html")
-
-
-@app.route("/resumen")
-def resumen():
-    return render_template("resumen.html")
+    return render_template("base.html")
 
 
 if __name__ == "__main__":

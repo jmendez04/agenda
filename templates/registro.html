@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block titulo %}Registro de colaboradores{% endblock %}
+
+{% block contenido %}
+<div class="bg-white border rounded p-4">
+
+    <h1 class="text-success mb-4">Registro de colaboradores</h1>
+
+    <!-- Mensaje de error enviado por el backend -->
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form action="/registro" method="POST">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+
+            <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                class="form-control"
+                value="{{ request.form.get('nombre', '') }}"
+                required>
+        </div>
+
+        <!-- Apellido -->
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+
+            <input
+                type="text"
+                id="apellido"
+                name="apellido"
+                class="form-control"
+                value="{{ request.form.get('apellido', '') }}"
+                required>
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">
+                Fecha de nacimiento
+            </label>
+
+            <input
+                type="date"
+                id="fecha_nacimiento"
+                name="fecha_nacimiento"
+                class="form-control"
+                value="{{ request.form.get('fecha_nacimiento', '') }}"
+                required>
+        </div>
+
+        <!-- Dia de turno -->
+        <div class="mb-4">
+            <label for="dia_semana" class="form-label">
+                Día de la semana que labora
+            </label>
+
+            <select
+                id="dia_semana"
+                name="dia_semana"
+                class="form-select"
+                required>
+
+                <option value="">Seleccioná un día</option>
+
+                {% for dia in [
+                    "Lunes", "Martes", "Miércoles", "Jueves",
+                    "Viernes", "Sábado", "Domingo"
+                ] %}
+                <option
+                    value="{{ dia }}"
+                    {% if request.form.get('dia_semana') == dia %}selected{% endif %}>
+                    {{ dia }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Guardar colaborador
+        </button>
+
+        <a href="/colaboradores" class="btn btn-outline-success">
+            Ver colaboradores
+        </a>
+
+    </form>
+</div>
+{% endblock %}

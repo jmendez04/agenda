@@ -43,6 +43,26 @@ def cargar_colaboradores():
     return colaboradores
 
 
+def contar_por_dia(colaboradores):
+    resumen = {
+        "Lunes": 0,
+        "Martes": 0,
+        "Miércoles": 0,
+        "Jueves": 0,
+        "Viernes": 0,
+        "Sábado": 0,
+        "Domingo": 0
+    }
+
+    for colaborador in colaboradores:
+        dia = colaborador["dia_semana"]
+
+        if dia in resumen:
+            resumen[dia] += 1
+
+    return resumen
+
+
 # Pagina de bienvenida
 @app.route("/")
 @app.route("/base")
@@ -96,6 +116,19 @@ def colaboradores():
     return render_template(
         "colaboradores.html",
         colaboradores=lista
+    )
+
+
+# Pagina de resumen
+@app.route("/resumen")
+def resumen():
+
+    lista = cargar_colaboradores()
+    resumen_dias = contar_por_dia(lista)
+
+    return render_template(
+        "resumen.html",
+        resumen=resumen_dias
     )
 
 
